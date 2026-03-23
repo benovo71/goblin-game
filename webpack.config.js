@@ -1,24 +1,27 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
-const loader = require("mini-css-extract-plugin/types/loader");
+// webpack.config.js
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: './src/index.js',
   output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "dist"),
+    filename: 'bundle.[contenthash].js',
+    path: path.resolve(__dirname, 'dist'),
     clean: true,
+    assetModuleFilename: 'assets/[name][ext]',
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html",
+      template: './src/index.html',
     }),
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'styles.[contenthash].css',
+    }),
     new CopyPlugin({
       patterns: [
-        { from: "assets", to: "assets" }, // Копируем картинки в dist/assets
+        { from: 'assets', to: 'assets', noErrorOnMissing: true },
       ],
     }),
   ],
@@ -26,18 +29,17 @@ module.exports = {
     rules: [
       {
         test: /\.scss$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", sass - loader],
+        use: [
+          MiniCssExtractPlugin.loader, 
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
-        type: "asset/resource",
-        generator: {
-          filename: "assets/[name][ext]", // Сохраняем структуру папки assets
-        },
+        test: /\.(png|jpg|gif|svg|webp)$/,
+        type: 'asset/resource',
       },
     ],
   },
-  devServer: {
-    static: "./dist",
-  },
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
 };
