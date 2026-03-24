@@ -6,4 +6,4 @@ const game = new Game();
 const startBtn = document.createElement("button");
 startBtn.textContent = "Start Game";
 startBtn.onclick = () => game.start();
-document.body.appendChild(startBtn);
+document.body.append(startBtn);

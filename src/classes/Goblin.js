@@ -23,7 +23,7 @@ export default class Goblin {
 
     // Для этого примера предположим, что show принимает конкретный элемент ячейки
     this.currentCell = positionIndex;
-    this.currentCell.appendChild(this.element);
+    this.currentCell.append(this.element);
 
     this.element.addEventListener("click", this.onClick);
   }
